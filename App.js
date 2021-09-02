@@ -1,21 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+// tools
+import React, {useState} from 'react';
+import * as Font from 'expo-font'
+import AppLoading from 'expo-app-loading';
+// routes
+import MyDrawer from './Routes/Drawer';
+import { NavigationContainer } from '@react-navigation/native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const getFonts = () =>  Font.loadAsync({
+    'RobotoMono-Regular': require('./assets/fonts/static/RobotoMono-Regular.ttf'),
+    'RobotoMono-Bold': require('./assets/fonts/static/RobotoMono-Bold.ttf'),
+    'RobotoMono-Italic': require('./assets/fonts/static/RobotoMono-Italic.ttf'),
+});
+
+const App = () => {
+  const [load, setLoad] = useState(false)
+
+  if(load){
+    console.log('true')
+    return (
+      <NavigationContainer>
+        <MyDrawer />
+      </NavigationContainer>
+    );
+  }else{
+    return(
+      <AppLoading
+        startAsync={getFonts}
+        onFinish={() => setLoad(true ) }
+        onError={console.warn}
+      />
+    )
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default App
